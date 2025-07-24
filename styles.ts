@@ -62,7 +62,7 @@ export const styles = StyleSheet.create({
     },
     sliderTrack: {
       width: 40,
-      height: 150,
+      height: 100,
       backgroundColor: '#ddd',
       borderRadius: 20,
       justifyContent: 'center',

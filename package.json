@@ -14,7 +14,9 @@
     "expo-status-bar": "~2.2.3",
     "react": "19.0.0",
     "react-native": "0.79.5",
-    "react-native-reanimated": "~3.17.4"
+    "react-native-gesture-handler": "^2.27.2",
+    "react-native-reanimated": "~3.17.4",
+    "rn-vertical-slider": "^4.4.1"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

@@ -4,7 +4,6 @@ import {
   TouchableOpacity,
   Text,
   PanResponder,
-  Animated,
 } from 'react-native';
 import { Canvas, Path, Skia, SkPath } from '@shopify/react-native-skia';
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
@@ -103,6 +102,7 @@ export default function App() {
           </View>
           <Text style={styles.strokeLabel}>{strokeWidth}px</Text>
         </View>
+       
       </View>
     </View>
   );
