@@ -1,6 +1,5 @@
 import React, { useState, useRef } from 'react';
 import {
-  StyleSheet,
   View,
   TouchableOpacity,
   Text,
@@ -9,6 +8,7 @@ import {
 } from 'react-native';
 import { Canvas, Path, Skia, SkPath } from '@shopify/react-native-skia';
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
+import Foundation from '@expo/vector-icons/Foundation';
 import { styles } from './styles';
 
 export default function App() {
@@ -18,7 +18,6 @@ export default function App() {
   const [strokeWidth, setStrokeWidth] = useState<number>(4);
 
   const sliderHeight = 150;
-  const pan = useRef(new Animated.Value(0)).current;
 
   const panResponder = useRef(
     PanResponder.create({
@@ -86,21 +85,18 @@ export default function App() {
           <TouchableOpacity
             key={color}
             onPress={() => setSelectedColor(color)}
-            style={[
-              styles.colorButton,
-              { backgroundColor: color },
-              selectedColor === color && styles.selectedColor,
-            ]}
-          />
+            style={{ marginLeft: 20 }}
+          >
+            <Foundation name="paint-bucket" size={24} color={color} />
+          </TouchableOpacity>
         ))}
 
         <TouchableOpacity
           onPress={() => setSelectedColor(ERASER_COLOR)}
+          style={{ marginLeft: 20 }}
         >
           <FontAwesome6 name="eraser" size={24} color="black" />
         </TouchableOpacity>
-
-      
         <View style={styles.sliderContainer}>
           <View style={styles.sliderTrack} {...panResponder.panHandlers}>
             <View style={[styles.sliderIndicator, { height: strokeWidth * 2 }]} />
