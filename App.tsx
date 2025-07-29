@@ -20,7 +20,6 @@ interface IPath {
 export default function App() {
   const [paths, setPaths] = useState<IPath[]>([]);
   const [redoPath, setRedoPath] = useState<IPath[]>([]);
-  const [undoPath, setUndoPath] = useState<IPath[]>([]);
   const [currentPath, setCurrentPath] = useState<SkPath | null>(null);
   const [selectedColor, setSelectedColor] = useState<string>('black');
   const [strokeWidth, setStrokeWidth] = useState<number>(4);
@@ -55,17 +54,40 @@ export default function App() {
     if (currentPath) {
       setPaths((prev) => [...prev, { path: currentPath, color: selectedColor, stroke: strokeWidth }]);
       setCurrentPath(null);
+      setRedoPath([]); 
     }
   };
 
-  const handleRedo = () => {
-    console.log("handleRedo")
-  }
-
   const handleUndo = () => {
     if (paths.length === 0) return;
-    setPaths((prev) => prev.slice(0, -1));
-  }
+  
+    setPaths((prevPaths) => {
+      const newPaths = [...prevPaths];
+      const last = newPaths.pop();
+  
+      if (last) {
+        setRedoPath((prevRedo) => [...prevRedo, last]);
+      }
+  
+      return newPaths;
+    });
+  };
+  
+  const handleRedo = () => {
+    if (redoPath.length === 0) return;
+  
+    setRedoPath((prevRedo) => {
+      const newRedo = [...prevRedo];
+      const last = newRedo.pop();
+  
+      if (last) {
+        setPaths((prevPaths) => [...prevPaths, last]);
+      }
+  
+      return newRedo;
+    });
+  };
+  
 
   const COLORS = ['black', 'red', 'blue', 'green', 'orange'];
   const ERASER_COLOR = 'white';
