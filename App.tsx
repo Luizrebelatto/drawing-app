@@ -8,10 +8,19 @@ import {
 import { Canvas, Path, Skia, SkPath } from '@shopify/react-native-skia';
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import Foundation from '@expo/vector-icons/Foundation';
+import Ionicons from '@expo/vector-icons/Ionicons';
 import { styles } from './styles';
 
+interface IPath {
+  path: SkPath;
+  color: string;
+  stroke: number;
+}
+
 export default function App() {
-  const [paths, setPaths] = useState<{ path: SkPath; color: string; stroke: number }[]>([]);
+  const [paths, setPaths] = useState<IPath[]>([]);
+  const [redoPath, setRedoPath] = useState<IPath[]>([]);
+  const [undoPath, setUndoPath] = useState<IPath[]>([]);
   const [currentPath, setCurrentPath] = useState<SkPath | null>(null);
   const [selectedColor, setSelectedColor] = useState<string>('black');
   const [strokeWidth, setStrokeWidth] = useState<number>(4);
@@ -48,6 +57,15 @@ export default function App() {
       setCurrentPath(null);
     }
   };
+
+  const handleRedo = () => {
+    console.log("handleRedo")
+  }
+
+  const handleUndo = () => {
+    if (paths.length === 0) return;
+    setPaths((prev) => prev.slice(0, -1));
+  }
 
   const COLORS = ['black', 'red', 'blue', 'green', 'orange'];
   const ERASER_COLOR = 'white';
@@ -95,6 +113,18 @@ export default function App() {
           style={{ marginLeft: 20 }}
         >
           <FontAwesome6 name="eraser" size={24} color="black" />
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={handleRedo}
+          style={{ marginLeft: 20 }}
+        >
+          <Ionicons name="arrow-redo" size={24} color="black" />
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={handleUndo}
+          style={{ marginLeft: 20 }}
+        >
+          <Ionicons name="arrow-undo" size={24} color="black" />
         </TouchableOpacity>
         <View style={styles.sliderContainer}>
           <View style={styles.sliderTrack} {...panResponder.panHandlers}>

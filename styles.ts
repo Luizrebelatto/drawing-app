@@ -13,6 +13,7 @@ export const styles = StyleSheet.create({
       alignItems: 'center',
       padding: 10,
       backgroundColor: '#eee',
+      height: 60
     },
     colorButton: {
       width: 30,
