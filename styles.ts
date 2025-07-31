@@ -9,11 +9,20 @@ export const styles = StyleSheet.create({
       backgroundColor: 'white',
     },
     colorPicker: {
+      padding: 10,
+      backgroundColor: 'gray',
+      flexDirection: 'row',
+      justifyContent: 'space-between'
+    },
+    row: {
       flexDirection: 'row',
       alignItems: 'center',
-      padding: 10,
-      backgroundColor: '#eee',
-      height: 60
+      marginBottom: 10,
+      flexWrap: 'wrap',
+    },
+    sliderContainer: {
+      marginTop: 10,
+      alignItems: 'center',
     },
     colorButton: {
       width: 30,
@@ -55,12 +64,7 @@ export const styles = StyleSheet.create({
       justifyContent: 'center',
       alignItems: 'center',
     },
-    sliderContainer: {
-      position: 'absolute',
-      bottom: 50,
-      right: 10,
-      alignItems: 'center',
-    },
+   
     sliderTrack: {
       width: 40,
       height: 100,

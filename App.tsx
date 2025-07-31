@@ -1,164 +1,3 @@
-// import React, { useState, useRef } from 'react';
-// import {
-//   View,
-//   TouchableOpacity,
-//   Text,
-//   PanResponder,
-// } from 'react-native';
-// import { Canvas, Path, Skia, SkPath } from '@shopify/react-native-skia';
-// import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
-// import Foundation from '@expo/vector-icons/Foundation';
-// import Ionicons from '@expo/vector-icons/Ionicons';
-// import { styles } from './styles';
-
-// interface IPath {
-//   path: SkPath;
-//   color: string;
-//   stroke: number;
-// }
-
-// export default function App() {
-//   const [paths, setPaths] = useState<IPath[]>([]);
-//   const [redoPath, setRedoPath] = useState<IPath[]>([]);
-//   const [currentPath, setCurrentPath] = useState<SkPath | null>(null);
-//   const [selectedColor, setSelectedColor] = useState<string>('black');
-//   const [strokeWidth, setStrokeWidth] = useState<number>(4);
-
-//   const sliderHeight = 150;
-
-//   const panResponder = useRef(
-//     PanResponder.create({
-//       onStartShouldSetPanResponder: () => true,
-//       onMoveShouldSetPanResponder: () => true,
-//       onPanResponderMove: (_, gestureState) => {
-//         const rawValue = sliderHeight - gestureState.dy;
-//         const value = Math.max(1, Math.min(30, rawValue / 5));
-//         setStrokeWidth(Math.round(value));
-//       },
-//     })
-//   ).current;
-
-//   const handleTouchStart = (touchInfo) => {
-//     const newPath = Skia.Path.Make();
-//     newPath.moveTo(touchInfo.nativeEvent.locationX, touchInfo.nativeEvent.locationY);
-//     setCurrentPath(newPath);
-//   };
-
-//   const handleTouchMove = (touchInfo) => {
-//     if (!currentPath) return;
-//     currentPath.lineTo(touchInfo.nativeEvent.locationX, touchInfo.nativeEvent.locationY);
-//     setCurrentPath(currentPath.copy());
-//   };
-
-//   const handleTouchEnd = () => {
-//     if (currentPath) {
-//       setPaths((prev) => [...prev, { path: currentPath, color: selectedColor, stroke: strokeWidth }]);
-//       setCurrentPath(null);
-//       setRedoPath([]); 
-//     }
-//   };
-
-//   const handleUndo = () => {
-//     if (paths.length === 0) return;
-  
-//     setPaths((prevPaths) => {
-//       const newPaths = [...prevPaths];
-//       const last = newPaths.pop();
-  
-//       if (last) {
-//         setRedoPath((prevRedo) => [...prevRedo, last]);
-//       }
-  
-//       return newPaths;
-//     });
-//   };
-  
-//   const handleRedo = () => {
-//     if (redoPath.length === 0) return;
-  
-//     setRedoPath((prevRedo) => {
-//       const newRedo = [...prevRedo];
-//       const last = newRedo.pop();
-  
-//       if (last) {
-//         setPaths((prevPaths) => [...prevPaths, last]);
-//       }
-  
-//       return newRedo;
-//     });
-//   };
-  
-
-//   const COLORS = ['black', 'red', 'blue', 'green', 'orange'];
-//   const ERASER_COLOR = 'white';
-
-//   return (
-//     <View style={styles.wrapper}>
-//       <Canvas
-//         style={styles.canvas}
-//         onTouchStart={handleTouchStart}
-//         onTouchMove={handleTouchMove}
-//         onTouchEnd={handleTouchEnd}
-//       >
-//         {paths.map((item, index) => (
-//           <Path
-//             key={`path-${index}`}
-//             path={item.path}
-//             color={item.color}
-//             style="stroke"
-//             strokeWidth={item.stroke}
-//           />
-//         ))}
-//         {currentPath && (
-//           <Path
-//             path={currentPath}
-//             color={selectedColor}
-//             style="stroke"
-//             strokeWidth={strokeWidth}
-//           />
-//         )}
-//       </Canvas>
-
-//       <View style={styles.colorPicker}>
-//         {COLORS.map((color) => (
-//           <TouchableOpacity
-//             key={color}
-//             onPress={() => setSelectedColor(color)}
-//             style={{ marginLeft: 20 }}
-//           >
-//             <Foundation name="paint-bucket" size={24} color={color} />
-//           </TouchableOpacity>
-//         ))}
-
-//         <TouchableOpacity
-//           onPress={() => setSelectedColor(ERASER_COLOR)}
-//           style={{ marginLeft: 20 }}
-//         >
-//           <FontAwesome6 name="eraser" size={24} color="black" />
-//         </TouchableOpacity>
-//         <TouchableOpacity
-//           onPress={handleRedo}
-//           style={{ marginLeft: 20 }}
-//         >
-//           <Ionicons name="arrow-redo" size={24} color="black" />
-//         </TouchableOpacity>
-//         <TouchableOpacity
-//           onPress={handleUndo}
-//           style={{ marginLeft: 20 }}
-//         >
-//           <Ionicons name="arrow-undo" size={24} color="black" />
-//         </TouchableOpacity>
-//         <View style={styles.sliderContainer}>
-//           <View style={styles.sliderTrack} {...panResponder.panHandlers}>
-//             <View style={[styles.sliderIndicator, { height: strokeWidth * 2 }]} />
-//           </View>
-//           <Text style={styles.strokeLabel}>{strokeWidth}px</Text>
-//         </View>
-       
-//       </View>
-//     </View>
-//   );
-// }
 import React, { useState, useRef } from 'react';
 import {
   View,
@@ -177,6 +16,7 @@ import {
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import Foundation from '@expo/vector-icons/Foundation';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { styles } from './styles';
 
 interface IPath {
@@ -380,51 +220,67 @@ export default function App() {
             strokeWidth={previewShape.stroke}
           />
         )}
+        {drawingMode === 'freehand' && currentPath && (
+          <Path
+            path={currentPath}
+            color={selectedColor}
+            style="stroke"
+            strokeWidth={strokeWidth}
+          />
+        )}
       </Canvas>
 
       <View style={styles.colorPicker}>
-        {COLORS.map((color) => (
-          <TouchableOpacity
-            key={color}
-            onPress={() => setSelectedColor(color)}
-            style={{ marginLeft: 20 }}
-          >
-            <Foundation name="paint-bucket" size={24} color={color} />
-          </TouchableOpacity>
-        ))}
+      <View>
+        <View style={styles.row}>
+          {COLORS.map((color) => (
+            <TouchableOpacity
+              key={color}
+              onPress={() => setSelectedColor(color)}
+              style={{ marginHorizontal: 10 }}
+            >
+              <Foundation name="paint-bucket" size={24} color={color} />
+            </TouchableOpacity>
+          ))}
+        </View>
+      
+        <View style={styles.row}>
+            <TouchableOpacity
+              onPress={() => setSelectedColor(ERASER_COLOR)}
+              style={{ marginHorizontal: 10 }}
+            >
+              <FontAwesome6 name="eraser" size={24} color="black" />
+            </TouchableOpacity>
 
-        <TouchableOpacity
-          onPress={() => setSelectedColor(ERASER_COLOR)}
-          style={{ marginLeft: 20 }}
-        >
-          <FontAwesome6 name="eraser" size={24} color="black" />
-        </TouchableOpacity>
+            <TouchableOpacity onPress={handleRedo} style={{ marginHorizontal: 10 }}>
+              <Ionicons name="arrow-redo" size={24} color="black" />
+            </TouchableOpacity>
 
-        <TouchableOpacity onPress={handleRedo} style={{ marginLeft: 20 }}>
-          <Ionicons name="arrow-redo" size={24} color="black" />
-        </TouchableOpacity>
+            <TouchableOpacity onPress={handleUndo} style={{ marginHorizontal: 10 }}>
+              <Ionicons name="arrow-undo" size={24} color="black" />
+            </TouchableOpacity>
 
-        <TouchableOpacity onPress={handleUndo} style={{ marginLeft: 20 }}>
-          <Ionicons name="arrow-undo" size={24} color="black" />
-        </TouchableOpacity>
+            <TouchableOpacity onPress={() => setDrawingMode('freehand')} style={{ marginHorizontal: 10 }}>
+              <Text>✏️</Text>
+            </TouchableOpacity>
 
-        <TouchableOpacity onPress={() => setDrawingMode('freehand')} style={{ marginLeft: 20 }}>
-          <Text>✏️</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => setDrawingMode('circle')} style={{ marginLeft: 20 }}>
-          <Text>⚪</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => setDrawingMode('rectangle')} style={{ marginLeft: 20 }}>
-          <Text>▭</Text>
-        </TouchableOpacity>
+            <TouchableOpacity onPress={() => setDrawingMode('circle')} style={{ marginHorizontal: 10 }}>
+              <MaterialCommunityIcons name="checkbox-blank-circle-outline" size={24} color="black" />
+            </TouchableOpacity>
 
+            <TouchableOpacity onPress={() => setDrawingMode('rectangle')} style={{ marginHorizontal: 10 }}>
+              <MaterialCommunityIcons name="rectangle-outline" size={24} color="black" />
+            </TouchableOpacity>
+        </View>
+      </View>
         <View style={styles.sliderContainer}>
           <View style={styles.sliderTrack} {...panResponder.panHandlers}>
             <View style={[styles.sliderIndicator, { height: strokeWidth * 2 }]} />
           </View>
           <Text style={styles.strokeLabel}>{strokeWidth}px</Text>
         </View>
-      </View>
-    </View>
+      
+  </View>
+</View>
   );
 }
